@@ -13,12 +13,12 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        for (int i=0; i< storage.length; i++) {
-            if (storage[i] == null){
-                storage[i] = r;
-                break;
+            for (int i = 0; i < storage.length; i++) {
+                if (storage[i] == null) {
+                    storage[i] = r;
+                    break;
+                }
             }
-        }
     }
 
     Resume get(String uuid) {
@@ -38,7 +38,7 @@ public class ArrayStorage {
         int size = size();
         try {
             for (int i = 0; i < size; i++) {
-                if ((uuid != null) | (storage[i].toString().equals(uuid))) {
+                if (storage[i].toString().equals(uuid)) {
                     storage[i] = null;
                     for (int k = i; k < size - 1; k++) {
                         if (storage[k + 1] != null) {
