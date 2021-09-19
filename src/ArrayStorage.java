@@ -1,3 +1,5 @@
+
+import java.util.ArrayList;
 import java.util.Arrays;
 
 /**
@@ -11,10 +13,22 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
+        for (int i=0; i< storage.length; i++) {
+            if (storage[i] == null){
+                storage[i] = r;
+                break;
+            }
+        }
     }
 
-    Resume get(String uuid) {
-        return null;
+    Resume get(String uuid)  {
+        Resume resum = new Resume();
+        for ( Resume resume: storage) {
+            if (resume.toString().equals(uuid)) {
+                resum = resume;
+            }
+        }
+        return resum;
     }
 
     void delete(String uuid) {
@@ -24,10 +38,22 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        return new Resume[0];
+        ArrayList <Resume> list = new ArrayList<>();
+        for (Resume resume : storage) {
+            if (resume != null) {
+                list.add(resume);
+            }
+        }
+        return list.toArray(new Resume[0]);
     }
 
     int size() {
-        return 0;
+        int count = 0;
+        for (Resume resume: storage) {
+            if (resume != null){
+                count++;
+            }
+        }
+        return count;
     }
 }
