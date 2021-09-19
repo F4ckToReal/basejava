@@ -21,18 +21,40 @@ public class ArrayStorage {
         }
     }
 
-    Resume get(String uuid)  {
+    Resume get(String uuid) {
         Resume resum = new Resume();
-        for ( Resume resume: storage) {
-            if (resume.toString().equals(uuid)) {
-                resum = resume;
+        try {
+            for (Resume resume : storage) {
+                if (resume.toString().equals(uuid)) {
+                    resum = resume;
+                }
             }
+        } catch (NullPointerException e) {
         }
         return resum;
     }
 
     void delete(String uuid) {
+        int size = size();
+        try {
+            for (int i = 0; i < size; i++) {
+                if ((uuid != null) | (storage[i].toString().equals(uuid))) {
+                    storage[i] = null;
+                    for (int k = i; k < size - 1; k++) {
+                        if (storage[k + 1] != null) {
+                            storage[i] = storage[k + 1];
+                            storage[k + 1] = null;
+                            break;
+                        }
+                    }
+                }
+            }
+        }
+        catch (NullPointerException ex){
+        }
     }
+
+
 
     /**
      * @return array, contains only Resumes in storage (without null)
