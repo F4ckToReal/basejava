@@ -30,19 +30,16 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        Resume resum = new Resume();
         try {
             for (Resume resume : storage) {
-                if (resume.toString() == null)
-                    break;
                 if (resume.toString().equals(uuid)) {
-                    resum = resume;
+                    return resume;
                 }
             }
         } catch (NullPointerException e) {
             e.printStackTrace();
         }
-        return resum;
+        return null;
     }
 
     void delete(String uuid) {
