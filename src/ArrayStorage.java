@@ -31,7 +31,12 @@ public class ArrayStorage {
 
     Resume get(String uuid) {
         try {
+
             for (Resume resume : storage) {
+                if(!resume.toString().equals(uuid)){
+                    System.out.println("Нет в базе");
+                    break;
+                }
                 if (resume.toString().equals(uuid)) {
                     return resume;
                 }
@@ -44,24 +49,20 @@ public class ArrayStorage {
 
     void delete(String uuid) {
         int size = size();
+        int i;
         try  {
-            for (int i = 0; i < storage.length; i++) {
-                if (storage[i].toString().equals(uuid)) {
-                    storage[i] = null;
-                        for (int k = i; k < storage.length - 1; k++) {
-                            if (storage[k + 1] != null) {
-                                storage[i] = storage[k + 1];
-                                storage[k + 1] = null;
-                                break;
-                            }
-                        }
-                    }
+            for (i = 0; i < size; i++) {
+                if (storage[i].toString().equals(uuid))
+                    break;
                 }
+                        for (int k = i; k < storage.length- 1; k++) {
+                                storage[k] = storage[k + 1];
+                                size--;
+                            }
         } catch (NullPointerException ex) {
             ex.printStackTrace();
         }
     }
-
 
 
     /**
