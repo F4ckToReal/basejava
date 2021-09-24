@@ -7,10 +7,11 @@ import java.util.Arrays;
  */
 public class ArrayStorage {
     Resume[] storage = new Resume[10];
-    int size = size();
+    int size;
 
     void clear() {
-        Arrays.fill(storage, 0, size(), null);
+        size = size();
+        Arrays.fill(storage, 0, size, null);
     }
 
     void save(Resume r) {
@@ -28,13 +29,14 @@ public class ArrayStorage {
     }
 
     Resume get(String uuid) {
-        for (Resume resume : storage) {
-            if (!resume.toString().equals(uuid)) {
+        size = size();
+        for (int i=0; i<size; i++) {
+            if (!storage[i].toString().equals(uuid)) {
                 System.out.println("Нет в базе");
                 break;
             }
-            if (resume.toString().equals(uuid)) {
-                return resume;
+            if (storage[i].toString().equals(uuid)) {
+                return storage[i];
             }
         }
         return null;
