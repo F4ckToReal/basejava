@@ -35,10 +35,6 @@ public class ArrayStorage {
             if (storage[i].toString().equals(uuid)) {
                 return storage[i];
             }
-            if (!storage[i].toString().equals(uuid)) {
-                System.out.println("Нет в базе");
-                break;
-            }
         }
         return null;
     }
