@@ -6,44 +6,45 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    Resume[] storage = new Resume[10];
-    int size;
+    Resume[] storage = new Resume[10000];
+    int size = 0;
 
     void clear() {
-        size = size();
         Arrays.fill(storage, 0, size, null);
+        size = 0;
     }
 
     void save(Resume r) {
-
-        for (int i = 0; i < storage.length; i++) {
-            if (storage[i] == null) {
-                storage[i] = r;
-                break;
+        if (r.toString() != null) {
+            for (int i = 0; i < size + 1; i++) {
+                if (storage[i] == null) {
+                    storage[i] = r;
+                    size++;
+                    break;
+                }
+                if ((storage[i].toString().equals(r.toString()))) {
+                    System.out.println("РЕЗЮМЕ С ТАКИМ ИМЕНЕМ УЖЕ ЕСТЬ В БАЗЕ");
+                    break;
+                }
             }
-            if ((storage[i].toString().equals(r.toString()))) {
-                System.out.println("РЕЗЮМЕ С ТАКИМ ИМЕНЕМ УЖЕ ЕСТЬ В БАЗЕ");
-                break;
-            }
-        }
+        } else System.out.println("Введите имя!");
     }
 
     Resume get(String uuid) {
-        size = size();
-        for (int i=0; i<size; i++) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].toString().equals(uuid)) {
+                return storage[i];
+            }
             if (!storage[i].toString().equals(uuid)) {
                 System.out.println("Нет в базе");
                 break;
-            }
-            if (storage[i].toString().equals(uuid)) {
-                return storage[i];
             }
         }
         return null;
     }
 
+
     void delete(String uuid) {
-        int size = size();
         int i;
         for (i = 0; i < size; i++) {
             if (storage[i].toString().equals(uuid))
@@ -70,12 +71,7 @@ public class ArrayStorage {
     }
 
     int size() {
-        int count = 0;
-        for (Resume resume : storage) {
-            if (resume != null) {
-                count++;
-            }
-        }
-        return count;
+        return size;
     }
 }
+
