@@ -43,14 +43,14 @@ public class ArrayStorage {
         int i;
         for (i = 0; i < size; i++) {
             if (storage[i].toString().equals(uuid)) {
+                size--;
                 break;
             }
         }
-        for (int k = i + 1; k < storage.length; k++) {
-            storage[k - 1] = storage[k];
-            storage[k] = null;
+        for (int k = i + 1; k <= size; k++) {
+            if (storage[k] != null)
+                storage[k - 1] = storage[k];
         }
-        size--;
     }
 
 
