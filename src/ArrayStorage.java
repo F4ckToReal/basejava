@@ -1,4 +1,5 @@
 
+import java.beans.beancontext.BeanContextServiceRevokedEvent;
 import java.util.Arrays;
 
 /**
@@ -14,20 +15,21 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
+        int count = 0;
         if (r.toString() != null) {
-            for (int i = 0; i < size + 1; i++) {
-                if (storage[i] == null) {
-                    storage[i] = r;
-                    size++;
-                    break;
-                }
-                if ((storage[i].toString().equals(r.toString()))) {
-                    System.out.println("РЕЗЮМЕ С ТАКИМ ИМЕНЕМ УЖЕ ЕСТЬ В БАЗЕ");
-                    break;
+            for (int i = 0; i < size; i++) {
+                if (storage[i].toString().equals(r.toString())) {
+                    System.out.println("Резюме с таким UUID присутствует в базе");
+                    count++;
                 }
             }
-        } else System.out.println("Введите имя!");
+            if (count == 0) {
+                storage[size] = r;
+                size++;
+            }
+        } else System.out.println("Введите uuid!");
     }
+
 
     Resume get(String uuid) {
         for (int i = 0; i < size; i++) {
@@ -48,8 +50,7 @@ public class ArrayStorage {
             }
         }
         for (int k = i + 1; k <= size; k++) {
-            if (storage[k] != null)
-                storage[k - 1] = storage[k];
+            storage[k - 1] = storage[k];
         }
     }
 
