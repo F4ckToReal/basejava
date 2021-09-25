@@ -47,10 +47,10 @@ public class ArrayStorage {
                 break;
             }
         }
-            for (int k = i + 1; k < storage.length; k++) {
-                storage[k-1] = storage[k];
-                storage[k] = null;
-                }
+        for (int k = i + 1; k < storage.length; k++) {
+            storage[k - 1] = storage[k];
+            storage[k] = null;
+        }
         size--;
     }
 
@@ -59,13 +59,9 @@ public class ArrayStorage {
      * @return array, contains only Resumes in storage (without null)
      */
     Resume[] getAll() {
-        ArrayList<Resume> list = new ArrayList<>();
-        for (Resume resume : storage) {
-            if (resume != null) {
-                list.add(resume);
-            }
-        }
-        return list.toArray(new Resume[0]);
+        Resume[] allResume = new Resume[size];
+        if (size >= 0) System.arraycopy(storage, 0, allResume, 0, size);
+        return allResume;
     }
 
     int size() {
