@@ -15,15 +15,15 @@ public class ArrayStorage {
     }
 
     void save(Resume r) {
-        int count = 0;
+        boolean resumeInBase = false;
         if (r.toString() != null) {
             for (int i = 0; i < size; i++) {
                 if (storage[i].toString().equals(r.toString())) {
                     System.out.println("Резюме с таким UUID присутствует в базе");
-                    count++;
+                    resumeInBase = true;
                 }
             }
-            if (count == 0) {
+            if (!resumeInBase) {
                 storage[size] = r;
                 size++;
             }
