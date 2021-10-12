@@ -8,7 +8,7 @@ import java.util.Arrays;
  * Array based storage for Resumes
  */
 public class ArrayStorage {
-    private Resume[] storage = new Resume[10000];
+    private Resume[] storage = new Resume[4];
     private int size = 0;
 
     public void clear() {
@@ -37,41 +37,41 @@ public class ArrayStorage {
 
 
     public void update(Resume resume) {
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].toString().equals(resume.toString())) {
-                    storage[i] = resume;
-                }
+        boolean chekResume = false;
+        for (int i = 0; i < size; i++) {
+            if (storage[i].toString().equals(resume.toString())) {
+                storage[i] = resume;
+                chekResume = true;
             }
-        } else printNull();
+        }
+        if (!chekResume) printNull();
     }
 
 
     public Resume get(String uuid) {
-        if (size > 0) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].toString().equals(uuid)) {
-                    return storage[i];
-                }
+        boolean chekResume = false;
+        for (int i = 0; i < size; i++) {
+            if (storage[i].toString().equals(uuid)) {
+                chekResume = true;
+                return storage[i];
             }
-        } else printNull();
+        }
+        if (!chekResume) printNull();
         return null;
     }
 
 
     public void delete(String uuid) {
-        if (size > 0) {
-            int i;
-            for (i = 0; i < size; i++) {
-                if (storage[i].toString().equals(uuid)) {
-                    size--;
-                    break;
-                }
+        boolean chekResume = false;
+        for (int i = 0; i < size; i++) {
+            if (storage[i].toString().equals(uuid)) {
+                storage[i] = storage[size - 1];
+                storage[size - 1] = null;
+                size--;
+                chekResume = true;
             }
-            for (int k = i + 1; k <= size; k++) {
-                storage[k - 1] = storage[k];
-            }
-        } else printNull();
+        }
+        if (!chekResume) printNull();
     }
 
 
@@ -89,7 +89,7 @@ public class ArrayStorage {
     }
 
     void printNull() {
-        System.out.println("База данных пуста!");
+        System.out.println("Нет в базе данных!");
     }
 }
 
