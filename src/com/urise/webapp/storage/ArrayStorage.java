@@ -17,61 +17,48 @@ public class ArrayStorage {
     }
 
     public void save(Resume resum) {
-        boolean resumeInBase = false;
-        if (resum.toString() != null) {
-            for (int i = 0; i < size; i++) {
-                if (storage[i].toString().equals(resum.toString())) {
-                    System.out.println("Резюме с таким UUID присутствует в базе");
-                    resumeInBase = true;
-                }
-            }
-            if ((!resumeInBase) && (size < storage.length)) {
-                storage[size] = resum;
-                size++;
-            }
-            if (size == storage.length) {
-                System.out.println("База резюме заполнена");
-            }
-        } else System.out.println("Ошибка, вы не ввели uuid");
+        int index = getIndex(resum.getUuid());
+        if (index != -1 ) {
+            System.out.println("Резюме уже есть в базе");
+        }
+        else if (size == storage.length) {
+            System.out.println("База резюме заполнена");
+        } else {
+            storage[size] = resum;
+            size++;
+        }
     }
 
 
     public void update(Resume resume) {
-        boolean chekResume = false;
-        for (int i = 0; i < size; i++) {
-            if (storage[i].toString().equals(resume.toString())) {
-                storage[i] = resume;
-                chekResume = true;
-            }
+        int index = getIndex(resume.getUuid());
+        if (index == -1) {
+            printNull();
+        } else {
+            storage[index] = resume;
         }
-        if (!chekResume) printNull();
     }
 
 
     public Resume get(String uuid) {
-        boolean chekResume = false;
-        for (int i = 0; i < size; i++) {
-            if (storage[i].toString().equals(uuid)) {
-                chekResume = true;
-                return storage[i];
-            }
+        int index = getIndex(uuid);
+        if (index == -1) {
+            printNull();
+        } else {
+            return storage[index];
         }
-        if (!chekResume) printNull();
         return null;
     }
 
 
     public void delete(String uuid) {
-        boolean chekResume = false;
-        for (int i = 0; i < size; i++) {
-            if (storage[i].toString().equals(uuid)) {
-                storage[i] = storage[size - 1];
-                storage[size - 1] = null;
-                size--;
-                chekResume = true;
-            }
+        if (getIndex(uuid) == -1) {
+            printNull();
+        } else {
+            storage[getIndex(uuid)] = storage[size - 1];
+            storage[size - 1] = null;
+            size--;
         }
-        if (!chekResume) printNull();
     }
 
 
@@ -90,6 +77,15 @@ public class ArrayStorage {
 
     void printNull() {
         System.out.println("Нет в базе данных!");
+    }
+
+    private int getIndex(String uuid) {
+        for (int i = 0; i < size; i++) {
+            if (storage[i].toString().equals(uuid)) {
+                return i;
+            }
+        }
+        return -1;
     }
 }
 
