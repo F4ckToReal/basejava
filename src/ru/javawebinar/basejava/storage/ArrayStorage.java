@@ -23,17 +23,6 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
-    public void save(Resume r) {
-        if (getIndex(r.getUuid()) != -1) {
-            System.out.println("Resume " + r.getUuid() + " already exist");
-        } else if (size >= STORAGE_LIMIT) {
-            System.out.println("Storage overflow");
-        } else {
-            storage[size] = r;
-            size++;
-        }
-    }
-
     public void delete(String uuid) {
         int index = getIndex(uuid);
         if (index == -1) {
@@ -45,9 +34,17 @@ public class ArrayStorage extends AbstractArrayStorage {
         }
     }
 
-    public Resume[] getAll() {
-        return Arrays.copyOfRange(storage, 0, size);
+    public void save(Resume r) {
+        if (getIndex(r.getUuid()) != -1) {
+            System.out.println("Resume " + r.getUuid() + " already exist");
+        } else if (size >= STORAGE_LIMIT) {
+            System.out.println("Storage overflow");
+        } else {
+            storage[size] = r;
+            size++;
+        }
     }
+
 
     protected int getIndex(String uuid) {
         for (int i = 0; i < size; i++) {
