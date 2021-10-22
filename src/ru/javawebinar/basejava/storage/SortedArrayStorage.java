@@ -8,18 +8,28 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 
 
     @Override
-    public void clear() {
-
-    }
-
-    @Override
     public void update(Resume r) {
+        int index = getIndex(r.getUuid());
+        if (index < 0) {
+            System.out.println("Resume " + r.getUuid() + " not exist");
+        } else {
+            storage[index] = r;
+        }
 
     }
 
     @Override
     public void delete(String uuid) {
-
+        int i;
+        for (i = 0; i < size; i++) {
+            if (storage[i].toString().equals(uuid)) {
+                size--;
+                break;
+            }
+        }
+        for (int k = i + 1; k <= size; k++) {
+            storage[k - 1] = storage[k];
+        }
     }
 
     @Override
@@ -34,8 +44,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
             size++;
         } else {
             int pos = Math.abs(position) - 1;
-            System.out.println(pos);
-            for (int i = size; i >= pos; i--) {
+            for (int i = size; i > pos; i--) {
                 storage[i] = storage[i - 1];
             }
             storage[pos] = r;

@@ -11,6 +11,11 @@ public abstract class AbstractArrayStorage implements Storage {
     protected int size = 0;
 
 
+    public void clear() {
+        Arrays.fill(storage, 0, size, null);
+        size = 0;
+    }
+
     public Resume[] getAll() {
         return Arrays.copyOfRange(storage, 0, size);
     }
