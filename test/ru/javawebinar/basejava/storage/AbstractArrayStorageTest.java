@@ -6,7 +6,7 @@ import org.junit.Test;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-public class AbstractArrayStorageTest {
+public abstract class AbstractArrayStorageTest {
 
     private final Storage storage;
     private static final String UUID1 = "uuid1";
