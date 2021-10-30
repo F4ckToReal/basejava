@@ -5,6 +5,7 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
+import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.Arrays;
@@ -36,8 +37,12 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void get() {
-        storage.get("uuid2");
+        storage.get(UUID2);
+        storage.get(UUID1);
+        storage.get(UUID3);
         Assert.assertEquals(UUID2, "uuid2");
+        Assert.assertEquals(UUID1, "uuid1");
+        Assert.assertEquals(UUID3,"uuid3");
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -47,20 +52,22 @@ public abstract class AbstractArrayStorageTest {
 
     @Test
     public void update() {
-        storage.update(new Resume(UUID3));
-        Assert.assertEquals(new Resume(UUID3), new Resume(UUID3));
+        Resume newResume  = new Resume(UUID3);
+        storage.update(newResume);
+        Assert.assertEquals(newResume, storage.get(UUID3));
     }
 
     @Test(expected = NotExistStorageException.class)
     public void updateNotExist() {
-        storage.update(new Resume("UUID5"));
-        Assert.assertEquals(new Resume("UUID5"), new Resume(UUID1));
+        storage.get("Kitti");
+
     }
 
     @Test
     public void save() {
         storage.save(new Resume("YO"));
         Assert.assertEquals("YO", "YO");
+        Assert.assertEquals(4, storage.size());
     }
 
     @Test(expected = ExistStorageException.class)
@@ -68,17 +75,16 @@ public abstract class AbstractArrayStorageTest {
         storage.save(new Resume(UUID3));
     }
 
-    @Test(expected = IndexOutOfBoundsException.class)
+    @Test(expected = StorageException.class)
     public void saveOverFlow() {
-        Resume[] resumes = new Resume[3];
         try {
-            for (int i = 0; i < resumes.length; i++) {
-                resumes[i] = new Resume("Hello your number: " + i);
+            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
+                storage.save(new Resume("Hello your number: " + i));
             }
-        } catch (Exception e) {
+        } catch (StorageException e) {
             Assert.fail("Переполнение произошло раньше времени");
         }
-        resumes[4] = new Resume("overFlow");
+        storage.save(new Resume());
     }
 
 
@@ -101,6 +107,7 @@ public abstract class AbstractArrayStorageTest {
         resumes[1] = "uuid2";
         resumes[2] = "uuid3";
         Assert.assertEquals(Arrays.toString(storage.getAll()), Arrays.toString(resumes));
+        Assert.assertEquals(3, storage.size());
     }
 
     @Test
