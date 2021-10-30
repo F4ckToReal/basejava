@@ -48,13 +48,13 @@ public abstract class AbstractArrayStorageTest {
     @Test
     public void update() {
         storage.update(new Resume(UUID3));
-        Assert.assertEquals(UUID3, "uuid3");
+        Assert.assertEquals(new Resume(UUID3), new Resume(UUID3));
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void updateNotExist(){
+    public void updateNotExist() {
         storage.update(new Resume("UUID5"));
-        Assert.assertEquals("UUID5", UUID3);
+        Assert.assertEquals(new Resume("UUID5"), new Resume(UUID1));
     }
 
     @Test
@@ -64,18 +64,32 @@ public abstract class AbstractArrayStorageTest {
     }
 
     @Test(expected = ExistStorageException.class)
-    public void saveExist(){
+    public void saveExist() {
         storage.save(new Resume(UUID3));
     }
 
-    @Test
+    @Test(expected = IndexOutOfBoundsException.class)
+    public void saveOverFlow() {
+        Resume[] resumes = new Resume[3];
+        try {
+            for (int i = 0; i < resumes.length; i++) {
+                resumes[i] = new Resume("Hello your number: " + i);
+            }
+        } catch (Exception e) {
+            Assert.fail("Переполнение произошло раньше времени");
+        }
+        resumes[4] = new Resume("overFlow");
+    }
+
+
+    @Test(expected = NotExistStorageException.class)
     public void delete() {
-        storage.delete("uuid1");
-        Assert.assertEquals(2,storage.size());
+        storage.delete(UUID3);
+        storage.get(UUID3);
     }
 
     @Test(expected = NotExistStorageException.class)
-    public void deleteNotExist(){
+    public void deleteNotExist() {
         storage.delete("uuid5");
     }
 
