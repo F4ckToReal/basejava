@@ -1,8 +1,9 @@
 package ru.javawebinar.basejava.storage;
 
+import ru.javawebinar.basejava.exception.ExistStorageException;
+import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
@@ -31,7 +32,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void updateResume(int index, Resume r) {
-        list.set(index,r);
+        list.set(index, r);
     }
 
     @Override
@@ -41,23 +42,36 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     public void save(Resume r) {
-        list.add(r);
+        int index = getIndex(r.getUuid());
+        if (index >= 0) {
+            throw new ExistStorageException(r.getUuid());
+        } else {
+            list.add(r);
+        }
     }
 
     @Override
     public Resume get(String uuid) {
+        int index = getIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        }
         return getResume(uuid);
     }
 
     @Override
-    public void delete(String uuid) {
-        list.remove(getResume(uuid));
+    public Resume[] getAll() throws ClassCastException {
+        return list.toArray(new Resume[0]);
     }
 
     @Override
-    public Resume[] getAll() throws ClassCastException {
-        Resume[] allList = (Resume[]) list.toArray();
-        return Arrays.copyOfRange(allList, 0, size());
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        } else {
+            FillDeletedElement(index);
+        }
     }
 
     @Override
