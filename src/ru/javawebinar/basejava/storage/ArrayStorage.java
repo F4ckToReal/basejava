@@ -26,6 +26,7 @@ public class ArrayStorage extends AbstractArrayStorage {
     protected void FillDeletedElement(int index) {
         storage[index] = storage[size - 1];
     }
+
 }
 
 
