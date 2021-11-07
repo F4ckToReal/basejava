@@ -2,6 +2,7 @@ package ru.javawebinar.basejava.storage;
 
 import ru.javawebinar.basejava.model.Resume;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class ListStorage extends AbstractStorage {
@@ -30,7 +31,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected void updateResume(int index, Resume r) {
-        list.add(index, r);
+        list.set(index,r);
     }
 
     @Override
@@ -39,32 +40,33 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void update(Resume r) {
-
-    }
-
-    @Override
     public void save(Resume r) {
-
+        list.add(r);
     }
 
     @Override
     public Resume get(String uuid) {
-        return null;
+        return getResume(uuid);
     }
 
     @Override
     public void delete(String uuid) {
-
+        list.remove(getResume(uuid));
     }
 
     @Override
-    public Resume[] getAll() {
-        return new Resume[0];
+    public Resume[] getAll() throws ClassCastException {
+        Resume[] allList = (Resume[]) list.toArray();
+        return Arrays.copyOfRange(allList, 0, size());
     }
 
     @Override
     public int size() {
-        return 0;
+        return list.size();
+    }
+
+    private Resume getResume(String uuid) {
+        Resume resume = new Resume(uuid);
+        return list.get(list.indexOf(resume));
     }
 }
