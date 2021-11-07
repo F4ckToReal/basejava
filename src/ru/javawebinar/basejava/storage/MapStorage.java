@@ -3,18 +3,15 @@ package ru.javawebinar.basejava.storage;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-public class ListStorage extends AbstractStorage {
-    protected List<Resume> list;
-
-    public ListStorage(List<Resume> list) {
-        this.list = list;
-    }
+public class MapStorage extends AbstractStorage{
+    Map<String, Resume> map = new HashMap<>();
 
     @Override
     public void clear() {
-        list.clear();
+        map.clear();
     }
 
     @Override
@@ -23,43 +20,43 @@ public class ListStorage extends AbstractStorage {
         if (index >= 0) {
             throw new ExistStorageException(r.getUuid());
         } else {
-            list.add(r);
+            map.put(r.getUuid(),r);
         }
     }
 
     @Override
     public Resume[] getAll() {
-        return list.toArray(new Resume[0]);
+        return map.values().toArray(new Resume[0]);
     }
 
     @Override
     public int size() {
-        return list.size();
+        return map.size();
     }
 
     @Override
     protected int getIndex(String uuid) {
-        Resume resume = new Resume(uuid);
-        return list.indexOf(resume);
+        return 0;
     }
+
 
     @Override
     protected void InsertResume(Resume r, int index) {
-        list.add(index, r);
+
     }
 
     @Override
     protected void FillDeletedElement(int index) {
-        list.remove(index);
+
     }
 
     @Override
     protected void updateResume(int index, Resume r) {
-        list.set(index, r);
+
     }
 
     @Override
     protected Resume getResume(int index) {
-        return list.get(index);
+        return null;
     }
 }
