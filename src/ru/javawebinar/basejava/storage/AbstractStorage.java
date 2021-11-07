@@ -21,6 +21,16 @@ public abstract class AbstractStorage implements Storage {
         return getResume(index);
     }
 
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        } else {
+            FillDeletedElement(index);
+        }
+    }
+
+
     protected abstract int getIndex(String uuid);
 
     protected abstract void InsertResume(Resume r, int index);
