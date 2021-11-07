@@ -19,15 +19,6 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         size = 0;
     }
 
-    @Override
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return storage[index];
-    }
-
 
     @Override
     public void save(Resume r) {
@@ -69,5 +60,9 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
         return size;
     }
 
+    @Override
+    protected Resume getResume(int index) {
+        return storage[index];
+    }
 }
 

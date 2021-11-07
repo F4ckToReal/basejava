@@ -13,6 +13,40 @@ public class ListStorage extends AbstractStorage {
         this.list = list;
     }
 
+    @Override
+    public void clear() {
+        list.clear();
+    }
+
+    @Override
+    public void save(Resume r) {
+        int index = getIndex(r.getUuid());
+        if (index >= 0) {
+            throw new ExistStorageException(r.getUuid());
+        } else {
+            list.add(r);
+        }
+    }
+
+    @Override
+    public Resume[] getAll() throws ClassCastException {
+        return list.toArray(new Resume[0]);
+    }
+
+    @Override
+    public void delete(String uuid) {
+        int index = getIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        } else {
+            FillDeletedElement(index);
+        }
+    }
+
+    @Override
+    public int size() {
+        return list.size();
+    }
 
     @Override
     protected int getIndex(String uuid) {
@@ -36,51 +70,7 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public void clear() {
-        list.clear();
-    }
-
-    @Override
-    public void save(Resume r) {
-        int index = getIndex(r.getUuid());
-        if (index >= 0) {
-            throw new ExistStorageException(r.getUuid());
-        } else {
-            list.add(r);
-        }
-    }
-
-    @Override
-    public Resume get(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        }
-        return getResume(uuid);
-    }
-
-    @Override
-    public Resume[] getAll() throws ClassCastException {
-        return list.toArray(new Resume[0]);
-    }
-
-    @Override
-    public void delete(String uuid) {
-        int index = getIndex(uuid);
-        if (index < 0) {
-            throw new NotExistStorageException(uuid);
-        } else {
-            FillDeletedElement(index);
-        }
-    }
-
-    @Override
-    public int size() {
-        return list.size();
-    }
-
-    private Resume getResume(String uuid) {
-        Resume resume = new Resume(uuid);
-        return list.get(list.indexOf(resume));
+    protected Resume getResume(int index) {
+        return list.get(index);
     }
 }

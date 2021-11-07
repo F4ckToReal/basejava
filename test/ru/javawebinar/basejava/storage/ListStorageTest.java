@@ -37,6 +37,17 @@ public class ListStorageTest {
     }
 
     @Test
+    public void update(){
+        list.update(new Resume("uuid1"));
+        Assert.assertEquals("uuid1", "uuid1");
+    }
+
+    @Test(expected = NotExistStorageException.class)
+    public void updateNotExist(){
+        list.update(new Resume("uuid7"));
+    }
+
+    @Test
     public void save() {
         list.save(new Resume("uuid5"));
         Assert.assertEquals("uuid5", "uuid5");

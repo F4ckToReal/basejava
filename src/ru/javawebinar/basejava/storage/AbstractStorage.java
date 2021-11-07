@@ -13,6 +13,13 @@ public abstract class AbstractStorage implements Storage {
             updateResume(index, r);
         }
     }
+    public Resume get(String uuid) {
+        int index = getIndex(uuid);
+        if (index < 0) {
+            throw new NotExistStorageException(uuid);
+        }
+        return getResume(index);
+    }
 
     protected abstract int getIndex(String uuid);
 
@@ -21,4 +28,6 @@ public abstract class AbstractStorage implements Storage {
     protected abstract void FillDeletedElement(int index);
 
     protected abstract void updateResume(int index, Resume r);
+
+    protected abstract Resume getResume(int index);
 }
