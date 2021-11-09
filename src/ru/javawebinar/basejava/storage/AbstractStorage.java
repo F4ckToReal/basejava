@@ -5,6 +5,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 public abstract class AbstractStorage implements Storage {
 
+
     public void update(Resume r) {
         int index = getIndex(r.getUuid());
         if (index < 0) {
@@ -33,11 +34,9 @@ public abstract class AbstractStorage implements Storage {
 
     protected abstract int getIndex(String uuid);
 
-    protected abstract void InsertResume(Resume r, int index);
+    protected abstract void FillDeletedElement(Object searchKey);
 
-    protected abstract void FillDeletedElement(int index);
+    protected abstract void updateResume(Object searchKey, Resume r);
 
-    protected abstract void updateResume(int index, Resume r);
-
-    protected abstract Resume getResume(int index);
+    protected abstract Resume getResume(Object searchKey);
 }

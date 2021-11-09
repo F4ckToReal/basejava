@@ -12,6 +12,7 @@ public class ListStorage extends AbstractStorage {
         this.list = list;
     }
 
+
     @Override
     public void clear() {
         list.clear();
@@ -43,23 +44,19 @@ public class ListStorage extends AbstractStorage {
         return list.indexOf(resume);
     }
 
+
     @Override
-    protected void InsertResume(Resume r, int index) {
-        list.add(index, r);
+    protected void FillDeletedElement(Object searchKey) {
+        list.remove((int) searchKey);
     }
 
     @Override
-    protected void FillDeletedElement(int index) {
-        list.remove(index);
+    protected void updateResume(Object searchKey, Resume r) {
+        list.set((int) searchKey, r);
     }
 
     @Override
-    protected void updateResume(int index, Resume r) {
-        list.set(index, r);
-    }
-
-    @Override
-    protected Resume getResume(int index) {
-        return list.get(index);
+    protected Resume getResume(Object searchKey) {
+        return list.get((int) searchKey);
     }
 }

@@ -20,10 +20,10 @@ public class SortedArrayStorage extends AbstractArrayStorage {
     }
 
     @Override
-    protected void FillDeletedElement(int index) {
-        int position = size - index - 1;
+    protected void FillDeletedElement(Object searchKey) {
+        int position = size - (int) searchKey - 1;
         if (position > 0) {
-            System.arraycopy(storage,index+1,storage,index,position);
+            System.arraycopy(storage,(int) searchKey+1,storage,(int) searchKey,position);
         }
         storage[size - 1] = null;
         size--;

@@ -33,8 +33,8 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected void updateResume(int index, Resume r) {
-        storage[index] = r;
+    protected void updateResume(Object searchKey, Resume r) {
+        storage[(int) searchKey] = r;
     }
 
     @Override
@@ -48,8 +48,10 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
     }
 
     @Override
-    protected Resume getResume(int index) {
-        return storage[index];
+    protected Resume getResume(Object searchKey) {
+        return storage[(int) searchKey];
     }
+
+    protected abstract void InsertResume(Resume r, int index);
 }
 
