@@ -1,25 +1,16 @@
 package ru.javawebinar.basejava.storage;
 
-import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.util.HashMap;
+import java.util.Map;
 
 public class MapStorage extends AbstractStorage {
-    HashMap<String, Resume> map;
-
-    public MapStorage(HashMap<String, Resume> map) {
-        this.map = map;
-    }
+    Map<String, Resume> map = new HashMap<>();
 
     @Override
     public void clear() {
         map.clear();
-    }
-
-    @Override
-    public void save(Resume r) {
-        map.put(r.getUuid(), r);
     }
 
     @Override
@@ -33,36 +24,8 @@ public class MapStorage extends AbstractStorage {
     }
 
     @Override
-    public void update(Resume r) {
-        if(!map.containsValue(r)){
-            throw new NotExistStorageException(r.getUuid());
-        }
-        else {
-            updateResume(r.getUuid(), r );
-        }
-    }
-
-    @Override
-    public Resume get(String uuid) {
-       if(!map.containsKey(uuid)){
-           throw new NotExistStorageException(uuid);
-       }
-       return getResume(uuid);
-    }
-
-    @Override
-    public void delete(String uuid) {
-        if(!map.containsKey(uuid)){
-            throw new NotExistStorageException(uuid);
-        }
-        else{
-            FillDeletedElement(uuid);
-        }
-    }
-
-    @Override
-    protected int getIndex(String uuid) {
-        return 0;
+    protected Object getSearchKey(String uuid) {
+        return uuid;
     }
 
 
@@ -79,5 +42,15 @@ public class MapStorage extends AbstractStorage {
     @Override
     protected Resume getResume(Object searchKey) {
         return map.get((String) searchKey);
+    }
+
+    @Override
+    protected boolean isExist(Object searchKey) {
+        return map.containsKey((String) searchKey);
+    }
+
+    @Override
+    protected void doSave(Resume r, Object searchKey) {
+        map.put((String) searchKey, r);
     }
 }

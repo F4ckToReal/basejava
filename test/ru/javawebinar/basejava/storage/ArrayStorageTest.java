@@ -1,6 +1,9 @@
 package ru.javawebinar.basejava.storage;
 
-public class ArrayStorageTest extends AbstractArrayStorageTest{
+import org.junit.experimental.categories.Category;
+
+@Category(AbstractStorageTest.class)
+public class ArrayStorageTest extends AbstractStorageTest {
 
     private static final Storage storage2 = new ArrayStorage();
 
