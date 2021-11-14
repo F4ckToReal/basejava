@@ -16,12 +16,15 @@ public abstract class AbstractStorageTest {
     private static final String UUID2 = "uuid2";
     private static final String UUID3 = "uuid3";
 
+    private String fullName;
+
+
     @Before
     public void setUp() throws Exception {
         storage.clear();
-        storage.save(new Resume(UUID1, fullName));
-        storage.save(new Resume(UUID2, fullName));
-        storage.save(new Resume(UUID3, fullName));
+        storage.save(new Resume(UUID1, "Олег Викторович"));
+        storage.save(new Resume(UUID2, "Зинаида Петровна"));
+        storage.save(new Resume(UUID3, "Оксана Тобакова"));
     }
 
     public AbstractStorageTest(Storage storage) {
@@ -51,9 +54,8 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume newResume = new Resume(UUID3, fullName);
-        storage.update(newResume);
-        Assert.assertEquals(newResume, storage.get(UUID3));
+        storage.update(new Resume(UUID3, "Оксана Тобакова"));
+        Assert.assertEquals(new Resume(UUID3, "Оксана Тобакова"), storage.get(UUID3));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -64,21 +66,21 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() {
-        storage.save(new Resume("YO", fullName));
+        storage.save(new Resume("YO", "Децл Децл"));
         Assert.assertEquals("YO", "YO");
         Assert.assertEquals(4, storage.size());
     }
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
-        storage.save(new Resume(UUID3, fullName));
+        storage.save(new Resume(UUID3, "Оксана Тобакова"));
     }
 
     @Test(expected = StorageException.class)
     public void saveOverFlow() {
         try {
             for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume("Hello your number: " + i, fullName));
+                storage.save(new Resume("Hello your number: " + i, "overFlow"));
             }
         } catch (StorageException e) {
             Assert.fail("Переполнение произошло раньше времени");
