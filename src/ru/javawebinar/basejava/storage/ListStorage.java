@@ -25,7 +25,7 @@ public class ListStorage extends AbstractStorage {
 
     @Override
     protected Object getSearchKey(String uuid) {
-        Resume resume = new Resume(uuid);
+        Resume resume = new Resume(uuid, fullName);
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getUuid().equals(uuid))
                 return i;

@@ -19,9 +19,9 @@ public abstract class AbstractStorageTest {
     @Before
     public void setUp() throws Exception {
         storage.clear();
-        storage.save(new Resume(UUID1));
-        storage.save(new Resume(UUID2));
-        storage.save(new Resume(UUID3));
+        storage.save(new Resume(UUID1, fullName));
+        storage.save(new Resume(UUID2, fullName));
+        storage.save(new Resume(UUID3, fullName));
     }
 
     public AbstractStorageTest(Storage storage) {
@@ -51,7 +51,7 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        Resume newResume = new Resume(UUID3);
+        Resume newResume = new Resume(UUID3, fullName);
         storage.update(newResume);
         Assert.assertEquals(newResume, storage.get(UUID3));
     }
@@ -64,21 +64,21 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void save() {
-        storage.save(new Resume("YO"));
+        storage.save(new Resume("YO", fullName));
         Assert.assertEquals("YO", "YO");
         Assert.assertEquals(4, storage.size());
     }
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
-        storage.save(new Resume(UUID3));
+        storage.save(new Resume(UUID3, fullName));
     }
 
     @Test(expected = StorageException.class)
     public void saveOverFlow() {
         try {
             for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume("Hello your number: " + i));
+                storage.save(new Resume("Hello your number: " + i, fullName));
             }
         } catch (StorageException e) {
             Assert.fail("Переполнение произошло раньше времени");
