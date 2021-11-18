@@ -12,19 +12,29 @@ import ru.javawebinar.basejava.model.Resume;
 public abstract class AbstractStorageTest {
 
     private final Storage storage;
-    private static final String UUID1 = "uuid1";
-    private static final String UUID2 = "uuid2";
-    private static final String UUID3 = "uuid3";
+    private static final String UUID_1 = "uuid1";
+    private static final String UUID_2 = "uuid2";
+    private static final String UUID_3 = "uuid3";
+    private static final String UUID_4 = "uuid4";
 
-    private String fullName;
+    private static final Resume RESUME_1;
+    private static final Resume RESUME_2;
+    private static final Resume RESUME_3;
+    private static final Resume RESUME_4;
 
+    static {
+        RESUME_1 = new Resume(UUID_1, "Katti Berry");
+        RESUME_2 = new Resume(UUID_2, "Leo Peterson");
+        RESUME_3 = new Resume(UUID_3, "Clark Kent");
+        RESUME_4 = new Resume(UUID_4, "Mihail Schumacher");
+    }
 
     @Before
     public void setUp() throws Exception {
         storage.clear();
-        storage.save(new Resume(UUID1, "Олег Викторович"));
-        storage.save(new Resume(UUID2, "Зинаида Петровна"));
-        storage.save(new Resume(UUID3, "Оксана Тобакова"));
+        storage.save(RESUME_1);
+        storage.save(RESUME_2);
+        storage.save(RESUME_3);
     }
 
     public AbstractStorageTest(Storage storage) {
@@ -39,13 +49,11 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void get() {
-        storage.get(UUID2);
-        storage.get(UUID1);
-        storage.get(UUID3);
-        Assert.assertEquals(UUID2, "uuid2");
-        Assert.assertEquals(UUID1, "uuid1");
-        Assert.assertEquals(UUID3, "uuid3");
+        assertGet(RESUME_1);
+        assertGet(RESUME_2);
+        assertGet(RESUME_3);
     }
+
 
     @Test(expected = NotExistStorageException.class)
     public void getNotExist() {
@@ -54,8 +62,9 @@ public abstract class AbstractStorageTest {
 
     @Test
     public void update() {
-        storage.update(new Resume(UUID3, "Оксана Тобакова"));
-        Assert.assertEquals(new Resume(UUID3, "Оксана Тобакова"), storage.get(UUID3));
+        Resume newResume = RESUME_1;
+        storage.update(newResume);
+        Assert.assertEquals(newResume, storage.get(UUID_1));
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -73,7 +82,7 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
-        storage.save(new Resume(UUID3, "Оксана Тобакова"));
+        storage.save(RESUME_3);
     }
 
     @Test(expected = StorageException.class)
@@ -91,8 +100,8 @@ public abstract class AbstractStorageTest {
 
     @Test(expected = NotExistStorageException.class)
     public void delete() {
-        storage.delete(UUID3);
-        storage.get(UUID3);
+        storage.delete(UUID_3);
+        storage.get(UUID_3);
     }
 
     @Test(expected = NotExistStorageException.class)
@@ -102,12 +111,26 @@ public abstract class AbstractStorageTest {
 
 
     @Test
-    public void getAll() {
-        Assert.assertEquals(3, storage.size());
+    public void getAllSorted() {
+        Resume[] value = storage.getAllSorted().toArray(new Resume[0]);
+        Assert.assertEquals(3, value.length);
+        Assert.assertEquals(RESUME_3, value[0]);
+        Assert.assertEquals(RESUME_1, value[1]);
+        Assert.assertEquals(RESUME_2, value[2]);
     }
 
     @Test
     public void size() {
         Assert.assertEquals(3, storage.size());
     }
+
+
+    private void assertGet(Resume r) {
+        Assert.assertEquals(r, storage.get(r.getUuid()));
+    }
+
+    private void assertSize(int size) {
+        Assert.assertEquals(size, storage.size());
+    }
+
 }
