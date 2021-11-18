@@ -5,13 +5,12 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 
 public abstract class AbstractStorageTest {
 
-    private final Storage storage;
+    protected final Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
     private static final String UUID_3 = "uuid3";
@@ -29,16 +28,17 @@ public abstract class AbstractStorageTest {
         RESUME_4 = new Resume(UUID_4, "Mihail Schumacher");
     }
 
+    protected AbstractStorageTest(Storage storage) {
+        this.storage = storage;
+    }
+
+
     @Before
     public void setUp() throws Exception {
         storage.clear();
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
-    }
-
-    public AbstractStorageTest(Storage storage) {
-        this.storage = storage;
     }
 
     @Test
@@ -83,18 +83,6 @@ public abstract class AbstractStorageTest {
     @Test(expected = ExistStorageException.class)
     public void saveExist() {
         storage.save(RESUME_3);
-    }
-
-    @Test(expected = StorageException.class)
-    public void saveOverFlow() {
-        try {
-            for (int i = 4; i <= AbstractArrayStorage.STORAGE_LIMIT; i++) {
-                storage.save(new Resume("Hello your number: " + i, "overFlow"));
-            }
-        } catch (StorageException e) {
-            Assert.fail("Переполнение произошло раньше времени");
-        }
-        storage.save(new Resume());
     }
 
 
