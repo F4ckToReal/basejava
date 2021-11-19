@@ -22,7 +22,7 @@ public class MainArray {
                 continue;
             }
             String param = null;
-            if (params.length == 3) {
+            if (params.length > 1) {
                 param = params[1].intern();
             }
             switch (params[0]) {

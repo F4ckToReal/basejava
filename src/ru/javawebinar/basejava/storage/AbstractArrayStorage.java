@@ -5,7 +5,6 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Comparator;
 import java.util.List;
 
 public abstract class AbstractArrayStorage extends AbstractStorage {
@@ -27,7 +26,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage {
 
     @Override
     public List<Resume> getAllSorted() {
-        Arrays.sort(storage, 0, size, Comparator.comparing(Resume::getFullName));
+        Arrays.sort(storage, 0, size, Resume::compareTo);
         return new ArrayList<>(Arrays.asList(storage).subList(0, size));
     }
 
