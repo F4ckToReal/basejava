@@ -4,7 +4,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
 
-public class ListStorage extends AbstractStorage {
+public class ListStorage extends AbstractStorage<Integer> {
     protected List<Resume> list = new ArrayList<>();
 
     @Override
@@ -13,18 +13,12 @@ public class ListStorage extends AbstractStorage {
     }
 
     @Override
-    public List<Resume> getAllSorted() {
-        list.sort(Resume::compareTo);
-        return list;
-    }
-
-    @Override
     public int size() {
         return list.size();
     }
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         for (int i = 0; i < list.size(); i++) {
             if (list.get(i).getUuid().equals(uuid))
                 return i;
@@ -32,29 +26,35 @@ public class ListStorage extends AbstractStorage {
         return -1;
     }
 
+    @Override
+    protected List<Resume> addResume() {
+        return list;
+    }
+
 
     @Override
-    protected void FillDeletedElement(Object searchKey) {
-        list.remove((int) searchKey);
+    protected void doDelete(Integer searchKey) {
+        list.remove((int)searchKey);
     }
 
     @Override
-    protected void updateResume(Object searchKey, Resume r) {
-        list.set((int) searchKey, r);
+    protected void updateResume(Integer searchKey, Resume r) {
+        list.set(searchKey, r);
     }
 
     @Override
-    protected Resume getResume(Object searchKey) {
-        return list.get((int) searchKey);
+    protected Resume getResume(Integer searchKey) {
+        return list.get(searchKey);
     }
 
     @Override
-    protected boolean isExist(Object searchKey) {
-        return (int) searchKey >= 0;
+    protected boolean isExist(Integer searchKey) {
+        return searchKey >= 0;
     }
 
     @Override
-    protected void doSave(Resume r, Object searchKey) {
+    protected void doSave(Resume r, Integer searchKey) {
         list.add(r);
     }
+
 }

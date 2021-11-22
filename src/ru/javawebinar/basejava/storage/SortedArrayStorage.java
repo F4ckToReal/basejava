@@ -10,7 +10,7 @@ public class SortedArrayStorage extends AbstractArrayStorage {
 private  final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resume::getUuid);
 
     @Override
-    protected Object getSearchKey(String uuid) {
+    protected Integer getSearchKey(String uuid) {
         Resume searchKey = new Resume(uuid, "dummy");
         return Arrays.binarySearch(storage, 0, size, searchKey, RESUME_COMPARATOR);
     }
@@ -23,7 +23,7 @@ private  final Comparator<Resume> RESUME_COMPARATOR = Comparator.comparing(Resum
     }
 
     @Override
-    protected void FillDeletedElement(Object searchKey) {
+    protected void doDelete(Integer searchKey) {
         int position = size - (int) searchKey - 1;
         if (position > 0) {
             System.arraycopy(storage, (int) searchKey + 1, storage, (int) searchKey, position);

@@ -7,7 +7,8 @@ import org.junit.runners.Suite;
 @Suite.SuiteClasses({ArrayStorageTest.class,
 SortedArrayStorageTest.class,
 ListStorageTest.class,
-MapUuidStorageTest.class})
+MapUuidStorageTest.class,
+MapResumeStorageTest.class})
 
 public class AllStorageTest {
 }

@@ -4,7 +4,7 @@ import ru.javawebinar.basejava.model.Resume;
 
 import java.util.*;
 
-public class MapResumeStorage extends AbstractStorage{
+public class MapResumeStorage extends AbstractStorage<Resume> {
     Map<String, Resume> map = new HashMap<>();
 
     @Override
@@ -13,28 +13,33 @@ public class MapResumeStorage extends AbstractStorage{
     }
 
     @Override
-    protected void FillDeletedElement(Object resume) {
-        map.remove(((Resume) resume).getUuid());
+    protected void doDelete(Resume resume) {
+        map.remove((resume).getUuid());
     }
 
     @Override
-    protected void updateResume(Object Resume, Resume r) {
-        map.put(r.getUuid(),r);
+    protected void updateResume(Resume resume, Resume r) {
+        map.put(r.getUuid(), r);
     }
 
     @Override
-    protected Resume getResume(Object resume) {
-        return (Resume) resume ;
+    protected Resume getResume(Resume resume) {
+        return resume;
     }
 
     @Override
-    protected boolean isExist(Object resume) {
-        return resume != null ;
+    protected boolean isExist(Resume resume) {
+        return resume != null;
     }
 
     @Override
-    protected void doSave(Resume r, Object resume) {
-       map.put(r.getUuid(), r);
+    protected void doSave(Resume r, Resume resume) {
+        map.put(r.getUuid(), r);
+    }
+
+    @Override
+    protected List<Resume> addResume() {
+        return new ArrayList<>(map.values());
     }
 
     @Override
@@ -42,12 +47,6 @@ public class MapResumeStorage extends AbstractStorage{
         map.clear();
     }
 
-    @Override
-    public List<Resume> getAllSorted() {
-        List<Resume> resumeList = new ArrayList<>(map.values());
-        resumeList.sort(Resume::compareTo);
-        return resumeList;
-    }
 
     @Override
     public int size() {
