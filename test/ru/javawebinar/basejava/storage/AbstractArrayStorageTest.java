@@ -5,11 +5,12 @@ import org.junit.Test;
 import ru.javawebinar.basejava.exception.StorageException;
 import ru.javawebinar.basejava.model.Resume;
 
-public class AbstractArrayStorageTest extends AbstractStorageTest{
+public abstract class AbstractArrayStorageTest extends AbstractStorageTest{
 
     protected AbstractArrayStorageTest(Storage storage) {
         super(storage);
     }
+
 
     @Test(expected = StorageException.class)
     public void saveOverFlow() {
