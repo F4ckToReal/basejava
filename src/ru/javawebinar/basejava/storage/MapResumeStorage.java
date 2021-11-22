@@ -38,7 +38,7 @@ public class MapResumeStorage extends AbstractStorage<Resume> {
     }
 
     @Override
-    protected List<Resume> addResume() {
+    protected List<Resume> doCopyAll() {
         return new ArrayList<>(map.values());
     }
 
