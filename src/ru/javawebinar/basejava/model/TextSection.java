@@ -2,11 +2,11 @@ package ru.javawebinar.basejava.model;
 
 import java.util.Objects;
 
-public class TextSection extends Section{
+public class TextSection extends Section {
     private final String content;
 
     public TextSection(String content) {
-        Objects.requireNonNull(content,"content must not be null");
+        Objects.requireNonNull(content, "content must not be null");
         this.content = content;
     }
 
@@ -26,9 +26,5 @@ public class TextSection extends Section{
         TextSection that = (TextSection) o;
         return content.equals(that.content);
     }
-
-    @Override
-    public int hashCode() {
-        return content.hashCode();
-    }
 }
+
