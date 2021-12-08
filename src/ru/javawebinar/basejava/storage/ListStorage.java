@@ -38,12 +38,12 @@ public class ListStorage extends AbstractStorage<Integer> {
     }
 
     @Override
-    protected void updateResume(Integer searchKey, Resume r) {
+    protected void doUpdate(Integer searchKey, Resume r) {
         list.set(searchKey, r);
     }
 
     @Override
-    protected Resume getResume(Integer searchKey) {
+    protected Resume doGet(Integer searchKey) {
         return list.get(searchKey);
     }
 

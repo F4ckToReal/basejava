@@ -20,7 +20,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage <Integer> {
     }
 
     @Override
-    protected void updateResume(Integer searchKey, Resume r) {
+    protected void doUpdate(Integer searchKey, Resume r) {
         storage[(int) searchKey] = r;
     }
 
@@ -36,7 +36,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage <Integer> {
     }
 
     @Override
-    protected Resume getResume(Integer searchKey) {
+    protected Resume doGet(Integer searchKey) {
         return storage[(int) searchKey];
     }
 

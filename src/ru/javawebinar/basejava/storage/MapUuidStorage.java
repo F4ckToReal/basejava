@@ -35,12 +35,12 @@ public class MapUuidStorage extends AbstractStorage<String> {
     }
 
     @Override
-    protected void updateResume(String searchKey, Resume r) {
+    protected void doUpdate(String searchKey, Resume r) {
         map.put(searchKey, r);
     }
 
     @Override
-    protected Resume getResume(String searchKey) {
+    protected Resume doGet(String searchKey) {
         return map.get(searchKey);
     }
 
