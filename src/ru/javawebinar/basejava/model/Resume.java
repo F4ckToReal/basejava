@@ -1,7 +1,6 @@
 package ru.javawebinar.basejava.model;
 
-import java.util.Objects;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Initial resume class
@@ -13,6 +12,11 @@ public class Resume implements Comparable<Resume> {
 
     private final String fullName;
 
+    private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
+
+    private final Map<SectionType, Section> section = new EnumMap<>(SectionType.class);
+
+
     public Resume(String uuid, String fullName) {
         Objects.requireNonNull(uuid, "fullName must not be null");
         Objects.requireNonNull(fullName, "fullName must not be null");
@@ -20,8 +24,17 @@ public class Resume implements Comparable<Resume> {
         this.fullName = fullName;
     }
 
+
     public Resume(String fullName) {
         this(UUID.randomUUID().toString(), fullName);
+    }
+
+    public String getContact(ContactType type) {
+    return contacts.get(type);
+    }
+
+    public Section getSection(SectionType type) {
+        return section.get(type);
     }
 
 
@@ -44,12 +57,16 @@ public class Resume implements Comparable<Resume> {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return uuid.equals(resume.uuid) && fullName.equals(resume.fullName);
+
+        if (!uuid.equals(resume.uuid)) return false;
+        return fullName.equals(resume.fullName);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid, fullName);
+        int result = uuid.hashCode();
+        result = 31 * result + fullName.hashCode();
+        return result;
     }
 
     @Override
@@ -57,4 +74,5 @@ public class Resume implements Comparable<Resume> {
         int comp = fullName.compareTo(o.fullName);
         return comp != 0 ? comp : uuid.compareTo(o.uuid);
     }
+
 }
