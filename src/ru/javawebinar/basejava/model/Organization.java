@@ -2,13 +2,14 @@ package ru.javawebinar.basejava.model;
 
 import java.time.LocalDate;
 import java.util.Objects;
+import java.util.Set;
 
 public class Organization {
     private final Link homePage;
 
     private final LocalDate startDate;
     private final LocalDate endDate;
-    private final String title;
+    private final Set<String> title;
     private final String description;
 
 
@@ -36,15 +37,15 @@ public class Organization {
                 '}';
     }
 
-    public Organization(String name, String url, LocalDate startDate, LocalDate endDate, String title, String description) {
-        Objects.requireNonNull(startDate,"startDay must not be null");
-        Objects.requireNonNull(endDate," endDay must not be null");
-        Objects.requireNonNull(title," title must not be null");
+    public Organization(String name, String url, LocalDate startDate, LocalDate endDate,Set<String> title, String description) {
+        Objects.requireNonNull(startDate, "startDay must not be null");
+        Objects.requireNonNull(endDate, " endDay must not be null");
+        Objects.requireNonNull(title, " title must not be null");
         this.homePage = new Link(name, url);
         this.startDate = startDate;
         this.endDate = endDate;
         this.title = title;
         this.description = description;
-
     }
 }
+

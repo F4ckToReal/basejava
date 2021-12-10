@@ -3,9 +3,11 @@ package ru.javawebinar.basejava;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.nio.file.Files;
 
 public class MainFile {
-    public static void main(String[] args) {
+
+    public static void main(String[] args) throws IOException {
         String filePath = ".\\.gitignore";
 
         File file = new File(filePath);
@@ -29,5 +31,8 @@ public class MainFile {
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+
+        Files.walkFileTree(dir.toPath(),new MyFileVisitor());
+
     }
 }
