@@ -35,7 +35,6 @@ public abstract class AbstractStorageTest {
         this.storage = storage;
     }
 
-
     @Before
     public void setUp() throws Exception {
         storage.clear();

@@ -1,16 +1,16 @@
 package ru.javawebinar.basejava.model;
 
-import java.time.LocalDate;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 public class Organization {
     private final Link homePage;
+    private final List <OrganizationTimeWork> timeWork;
 
-    private final LocalDate startDate;
-    private final LocalDate endDate;
-    private final Set<String> title;
-    private final String description;
+    public Organization(Link homePage, List<OrganizationTimeWork> timeWork) {
+        this.homePage = homePage;
+        this.timeWork = timeWork;
+    }
 
 
     @Override
@@ -18,34 +18,20 @@ public class Organization {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return homePage.equals(that.homePage) && startDate.equals(that.startDate) && endDate.equals(that.endDate) && title.equals(that.title) && Objects.equals(description, that.description);
+        return Objects.equals(homePage, that.homePage) && timeWork.equals(that.timeWork);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(homePage, startDate, endDate, title, description);
+        return Objects.hash(homePage, timeWork);
     }
 
     @Override
     public String toString() {
         return "Organization{" +
                 "homePage=" + homePage +
-                ", startDate=" + startDate +
-                ", endDate=" + endDate +
-                ", title='" + title + '\'' +
-                ", description='" + description + '\'' +
+                ", timeWork=" + timeWork +
                 '}';
-    }
-
-    public Organization(String name, String url, LocalDate startDate, LocalDate endDate,Set<String> title, String description) {
-        Objects.requireNonNull(startDate, "startDay must not be null");
-        Objects.requireNonNull(endDate, " endDay must not be null");
-        Objects.requireNonNull(title, " title must not be null");
-        this.homePage = new Link(name, url);
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.title = title;
-        this.description = description;
     }
 }
 

@@ -33,6 +33,7 @@ public class Resume implements Comparable<Resume> {
     return contacts.get(type);
     }
 
+
     public Section getSection(SectionType type) {
         return section.get(type);
     }
