@@ -5,10 +5,9 @@ import org.junit.Before;
 import org.junit.Test;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
-import ru.javawebinar.basejava.model.Resume;
+import ru.javawebinar.basejava.model.*;
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.*;
 
 
 public abstract class AbstractStorageTest {
@@ -24,11 +23,19 @@ public abstract class AbstractStorageTest {
     private static final Resume RESUME_3;
     private static final Resume RESUME_4;
 
+    private static final Map<ContactType, String> contacts = new EnumMap<ContactType, String>(ContactType.class);
+    private static final Map<SectionType, Section> section = new EnumMap<>(SectionType.class);
+
     static {
+        contacts.put(ContactType.PHONE, "89159671460");
+        contacts.put(ContactType.MAIL,"ggVP@yandex.ru");
+        section.put(SectionType.PERSONAL, new ListSection(new ArrayList<>()));
+        section.put(SectionType.EXPERIENCE,new ListSection(new ArrayList<>()));
         RESUME_1 = new Resume(UUID_1, "Katti Berry");
-        RESUME_2 = new Resume(UUID_2, "Leo Peterson");
+        RESUME_2 = new Resume(UUID_2, "Leo Peterson", contacts, section);
         RESUME_3 = new Resume(UUID_3, "Clark Kent");
         RESUME_4 = new Resume(UUID_4, "Mihail Schumacher");
+
     }
 
     protected AbstractStorageTest(Storage storage) {
@@ -41,6 +48,7 @@ public abstract class AbstractStorageTest {
         storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
+
     }
 
     @Test
@@ -112,6 +120,10 @@ public abstract class AbstractStorageTest {
         Assert.assertEquals(3, storage.size());
     }
 
+    @Test
+    public void getContacts(){
+        Assert.assertEquals("89159671460", RESUME_2.getContact(ContactType.PHONE));
+    }
 
     private void assertGet(Resume r) {
         Assert.assertEquals(r, storage.get(r.getUuid()));
@@ -120,5 +132,7 @@ public abstract class AbstractStorageTest {
     private void assertSize(int size) {
         Assert.assertEquals(size, storage.size());
     }
+
+
 
 }
