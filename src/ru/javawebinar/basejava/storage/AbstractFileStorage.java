@@ -28,7 +28,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         File[] direct = directory.listFiles();
         if (direct != null) {
             for (File deleteFile : direct) {
-                deleteFile.deleteOnExit();
+                doDelete(deleteFile);
             }
         }
     }
@@ -36,10 +36,10 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
     @Override
     public int size() {
         String[] files = directory.list();
-        if (files != null) {
-            return files.length;
+        if (files == null) {
+            throw new StorageException("Directory read error", null);
         }
-        else return 0;
+        return files.length;
     }
 
     @Override
@@ -52,7 +52,7 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
         try {
             doWrite(r, file);
         } catch (IOException e) {
-            throw new StorageException("IO error", file.getName(), e);
+            throw new StorageException("File couldn't update", r.getUuid(), e);
         }
     }
 
@@ -75,24 +75,32 @@ public abstract class AbstractFileStorage extends AbstractStorage<File> {
 
     @Override
     protected Resume doGet(File file) {
-        return doRead(file);
+        try {
+            return doRead(file);
+        } catch (IOException e) {
+            throw new StorageException("File delete error", file.getName(), e);
+        }
     }
 
-    protected abstract Resume doRead(File file);
+    protected abstract Resume doRead(File file) throws IOException;
 
     @Override
     protected void doDelete(File file) {
-        file.deleteOnExit();
+        if (!file.delete()) {
+            throw new StorageException("File delete error", file.getName());
+        } else file.deleteOnExit();
     }
 
     @Override
     protected List<Resume> doCopyAll() {
         List<Resume> allResume = new ArrayList<>();
         File[] files = directory.listFiles();
-        for(int i = 0; i< Objects.requireNonNull(files).length; i++) {
-            allResume.add(doGet(files[i]));
+        if (files == null) {
+            throw new StorageException("Directory read error", null);
         }
-
+        for (File file : files) {
+            allResume.add(doGet(file));
+        }
         return allResume;
     }
 }

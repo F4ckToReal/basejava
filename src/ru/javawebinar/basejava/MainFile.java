@@ -8,7 +8,7 @@ import java.nio.file.Files;
 public class MainFile {
 
     public static void main(String[] args) throws IOException {
-        String filePath = ".\\.gitignore";
+       String filePath = ".\\.gitignore";
 
         File file = new File(filePath);
         try {
@@ -18,7 +18,7 @@ public class MainFile {
         }
 
         File dir = new File("./src/ru/javawebinar/basejava");
-        System.out.println(dir.isDirectory());
+       System.out.println(dir.isDirectory());
         String[] list = dir.list();
         if (list != null) {
             for (String name : list) {
