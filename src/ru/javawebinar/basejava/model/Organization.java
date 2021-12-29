@@ -9,13 +9,13 @@ import static ru.javawebinar.basejava.util.DateUtil.of;
 
 public class Organization {
     private final Link homePage;
-    private final List<OrganizationTimeWork> timeWork;
+    private final List<Position> timeWork;
 
-    public Organization(String name, String url, OrganizationTimeWork... timeWorks) {
+    public Organization(String name, String url, Position... timeWorks) {
         this(new Link(name, url), Arrays.asList(timeWorks));
     }
 
-    public Organization(Link homePage, List<OrganizationTimeWork> timeWork) {
+    public Organization(Link homePage, List<Position> timeWork) {
         this.homePage = homePage;
         this.timeWork = timeWork;
     }
@@ -39,21 +39,21 @@ public class Organization {
         return "Organization(" + homePage + ", " + timeWork + ')';
     }
 
-    public static class OrganizationTimeWork { ;
+    public static class Position { ;
         private final LocalDate startDate;
         private final LocalDate endDate;
         private final Set<String> title;
         private final String description;
 
-        public OrganizationTimeWork (int startYear, Month startMonth, String title, String description) {
+        public Position(int startYear, Month startMonth, String title, String description) {
             this(of(startYear, startMonth), NOW, Collections.singleton(title), description);
         }
 
-        public OrganizationTimeWork (int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
+        public Position(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
             this(of(startYear, startMonth), of(endYear, endMonth), Collections.singleton(title), description);
         }
 
-        public OrganizationTimeWork(LocalDate startDate, LocalDate endDate, Set<String> title, String description) {
+        public Position(LocalDate startDate, LocalDate endDate, Set<String> title, String description) {
             Objects.requireNonNull(startDate, "startDay must not be null");
             Objects.requireNonNull(endDate, " endDay must not be null");
             Objects.requireNonNull(title, " title must not be null");
@@ -80,6 +80,26 @@ public class Organization {
                 return description;
             }
 
+
+        @Override
+        public boolean equals(Object o) {
+            if (this == o) return true;
+            if (o == null || getClass() != o.getClass()) return false;
+            Position position = (Position) o;
+            return startDate.equals(position.startDate) &&
+                    endDate.equals(position.endDate) &&
+                    title.equals(position.title) &&
+                    Objects.equals(description, position.description);
+        }
+
+        @Override
+        public int hashCode() {
+            return Objects.hash(startDate, endDate, title, description);
+        }
+        @Override
+        public String toString() {
+            return "Position(" + startDate + ',' + endDate + ',' + title + ',' + description + ')';
+        }
     }
 }
 
