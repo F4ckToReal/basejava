@@ -4,6 +4,7 @@ import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
+import java.io.IOException;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -23,7 +24,7 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     protected abstract void doSave(Resume r, SK searchKey);
 
-    protected abstract List<Resume> doCopyAll();
+    protected abstract List<Resume> doCopyAll() throws IOException;
 
     protected SK getExistedKey(String uuid) {
         SK searchKey = getSearchKey(uuid);
@@ -73,7 +74,13 @@ public abstract class AbstractStorage<SK> implements Storage {
 
     public List<Resume> getAllSorted() {
         LOG.info("GetAlLSorted");
-        List<Resume> resumeList = doCopyAll();
+        List<Resume> resumeList = null;
+        try {
+            resumeList = doCopyAll();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        assert resumeList != null;
         Collections.sort(resumeList);
         return resumeList;
     }
