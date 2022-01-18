@@ -8,11 +8,15 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.*;
 
 import java.io.File;
-import java.util.*;
+import java.io.IOException;
+import java.util.Arrays;
+import java.util.EnumMap;
+import java.util.List;
+import java.util.Map;
 
 
-public abstract class AbstractStorageTest {
-    protected static final File STORAGE_DIR = new File("C:\\Users\\Shiro\\basejava");
+public abstract class AbstractStorageTest extends ResumeTestDate {
+    protected static final File STORAGE_DIR = new File("./src/ru/javawebinar");
     protected Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
@@ -28,25 +32,25 @@ public abstract class AbstractStorageTest {
     private static final Map<SectionType, Section> section = new EnumMap<>(SectionType.class);
 
     static {
-        contacts.put(ContactType.PHONE, "89159671460");
-        contacts.put(ContactType.MAIL,"ggVP@yandex.ru");
-        section.put(SectionType.PERSONAL, new ListSection(new ArrayList<>()));
-        section.put(SectionType.EXPERIENCE,new ListSection(new ArrayList<>()));
-        RESUME_1 = new Resume(UUID_1, "Katti Berry");
-        RESUME_2 = new Resume(UUID_2, "Leo Peterson", contacts, section);
-        RESUME_3 = new Resume(UUID_3, "Clark Kent");
-        RESUME_4 = new Resume(UUID_4, "Mihail Schumacher");
+        RESUME_1 = new Resume(UUID_1, "Ketti");
+        RESUME_2 = new Resume(UUID_2, "Barri");
+        RESUME_3 = new Resume(UUID_3, "Genre");
+        RESUME_4 = new Resume(UUID_4, "Lora");
+
 
     }
+
 
     protected AbstractStorageTest(Storage storage) {
         this.storage = storage;
     }
 
+
     @Before
     public void setUp() throws Exception {
         storage.clear();
-        storage.save(RESUME_1);
+        //storage.save(RESUME_1);
+        storage.save(createResume(UUID_1, "Ketti"));
         storage.save(RESUME_2);
         storage.save(RESUME_3);
 
@@ -57,6 +61,12 @@ public abstract class AbstractStorageTest {
         storage.clear();
         Assert.assertEquals(0, storage.size());
     }
+
+    @Test
+    public void size() {
+        Assert.assertEquals(3, storage.size());
+    }
+
 
     @Test
     public void get() {
@@ -110,21 +120,12 @@ public abstract class AbstractStorageTest {
 
 
     @Test
-    public void getAllSorted() {
+    public void getAllSorted() throws IOException {
         List<Resume> list = storage.getAllSorted();
         Assert.assertEquals(3, list.size());
-        Assert.assertEquals(list, Arrays.asList(RESUME_3, RESUME_1, RESUME_2));
+        Assert.assertEquals(list, Arrays.asList(RESUME_2, RESUME_3, RESUME_1));
     }
 
-    @Test
-    public void size() {
-        Assert.assertEquals(3, storage.size());
-    }
-
-    @Test
-    public void getContacts(){
-        Assert.assertEquals("89159671460", RESUME_2.getContact(ContactType.PHONE));
-    }
 
     private void assertGet(Resume r) {
         Assert.assertEquals(r, storage.get(r.getUuid()));
@@ -133,7 +134,5 @@ public abstract class AbstractStorageTest {
     private void assertSize(int size) {
         Assert.assertEquals(size, storage.size());
     }
-
-
 
 }

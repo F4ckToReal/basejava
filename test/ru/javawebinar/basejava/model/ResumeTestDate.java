@@ -1,27 +1,33 @@
 package ru.javawebinar.basejava.model;
 
+import java.time.Month;
+
 public class ResumeTestDate {
 
     public Resume createResume(String uuid, String fullName) {
-        Resume testResume = new Resume(uuid, fullName);
+        Resume resume = new Resume(uuid, fullName);
 
-        testResume.getContact(ContactType.PHONE);
-        testResume.getContact(ContactType.MOBILE);
-        testResume.getContact(ContactType.HOME_PHONE);
-        testResume.getContact(ContactType.SKYPE);
-        testResume.getContact(ContactType.MAIL);
-        testResume.getContact(ContactType.LINKEDIN);
-        testResume.getContact(ContactType.GITHUB);
-        testResume.getContact(ContactType.STATCKOVERFLOW);
-        testResume.getContact(ContactType.HOME_PAGE);
-
-        testResume.getSection(SectionType.PERSONAL);
-        testResume.getSection(SectionType.OBJECTIVE);
-        testResume.getSection(SectionType.ACHIEVEMENT);
-        testResume.getSection(SectionType.QUALIFICATIONS);
-        testResume.getSection(SectionType.EXPERIENCE);
-        testResume.getSection(SectionType.EDUCATION);
-
-        return testResume;
+        resume.addContact(ContactType.MAIL, "mail1@ya.ru");
+        resume.addContact(ContactType.PHONE, "11111");
+        resume.addSection(SectionType.OBJECTIVE, new TextSection("Objective1"));
+        resume.addSection(SectionType.PERSONAL, new TextSection("Personal data"));
+        resume.addSection(SectionType.ACHIEVEMENT, new ListSection("Achivment11", "Achivment12", "Achivment13"));
+        resume.addSection(SectionType.QUALIFICATIONS, new ListSection("Java", "SQL", "JavaScript"));
+        resume.addSection(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("Organization11", "http://Organization11.ru",
+                                new Organization.Position(2005, Month.JANUARY, "position1", "content1"),
+                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "position2", "content2"))));
+        resume.addSection(SectionType.EDUCATION,
+                new OrganizationSection(
+                        new Organization("Institute", null,
+                                new Organization.Position(1996, Month.JANUARY, 2000, Month.DECEMBER, "aspirant", null),
+                                new Organization.Position(2001, Month.MARCH, 2005, Month.JANUARY, "student", "IT facultet")),
+                        new Organization("Organization12", "http://Organization12.ru")));
+        resume.addSection(SectionType.EXPERIENCE,
+                new OrganizationSection(
+                        new Organization("Organization2", "http://Organization2.ru",
+                                new Organization.Position(2015, Month.JANUARY, "position1", "content1"))));
+        return resume;
     }
 }

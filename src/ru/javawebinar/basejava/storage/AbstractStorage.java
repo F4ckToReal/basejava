@@ -5,6 +5,7 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.Resume;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.logging.Logger;
@@ -72,16 +73,16 @@ public abstract class AbstractStorage<SK> implements Storage {
         doDelete(searchKey);
     }
 
-    public List<Resume> getAllSorted() {
+    public List<Resume> getAllSorted()  {
         LOG.info("GetAlLSorted");
-        List<Resume> resumeList = null;
+        List<Resume> resumeList = new ArrayList<>();
         try {
             resumeList = doCopyAll();
-        } catch (IOException e) {
+            Collections.sort(resumeList);
+        }
+        catch (IOException e){
             e.printStackTrace();
         }
-        assert resumeList != null;
-        Collections.sort(resumeList);
         return resumeList;
     }
 

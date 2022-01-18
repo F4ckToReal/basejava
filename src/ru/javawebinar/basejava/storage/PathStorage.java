@@ -12,16 +12,14 @@ import java.util.Objects;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public abstract class AbstractPathStorage extends AbstractStorage<Path> {
+public class PathStorage extends AbstractStorage<Path> {
     private final Path directory;
+    private StreamSerialize myPath;
 
-    protected abstract void doWrite(Resume r, OutputStream os) throws IOException;
-
-    protected abstract Resume doRead(InputStream is) throws IOException;
-
-    protected AbstractPathStorage(String dir) {
+    protected PathStorage(String dir, StreamSerialize myPath) {
         directory = Paths.get(dir);
         Objects.requireNonNull(directory, "directory must not be null");
+        this.myPath = myPath;
         if (!Files.isDirectory(directory) || !Files.isWritable(directory)) {
             throw new IllegalArgumentException(dir + " is not directory or is not writable");
         }
@@ -29,7 +27,11 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
 
     @Override
     public void clear() {
-        getFilesList().forEach(this::doDelete);
+        try {
+            Files.list(directory).forEach(this::doDelete);
+        } catch (IOException e) {
+            throw new StorageException("Directory error", e);
+        }
     }
 
     @Override
@@ -45,7 +47,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected void doUpdate(Path path, Resume r) {
         try {
-            doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
+            myPath.doWrite(r, new BufferedOutputStream(Files.newOutputStream(path)));
         } catch (IOException e) {
             throw new StorageException("Path write error", r.getUuid(), e);
         }
@@ -70,7 +72,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
     @Override
     protected Resume doGet(Path path) {
         try {
-            return doRead(new BufferedInputStream(Files.newInputStream(path)));
+            return myPath.doRead(new BufferedInputStream(Files.newInputStream(path)));
         } catch (IOException e) {
             throw new StorageException("path read error", getFileName(path), e);
         }
@@ -81,13 +83,13 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         try {
             Files.delete(path);
         } catch (IOException e) {
-            throw new StorageException("path delete error", getFileName(path),e);
+            throw new StorageException("path delete error", getFileName(path), e);
         }
     }
 
     @Override
     protected List<Resume> doCopyAll() {
-      return getFilesList().map(this::doGet).collect(Collectors.toList());
+        return getFilesList().map(this::doGet).collect(Collectors.toList());
     }
 
 
@@ -99,7 +101,7 @@ public abstract class AbstractPathStorage extends AbstractStorage<Path> {
         try {
             return Files.list(directory);
         } catch (IOException e) {
-            throw new StorageException("Directory error", null, e);
+            throw new StorageException("Directory error", e);
         }
     }
 }
