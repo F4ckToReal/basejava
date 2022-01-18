@@ -3,7 +3,6 @@ package ru.javawebinar.basejava.model;
 import java.time.Month;
 
 public class ResumeTestDate {
-
     public Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
 
@@ -31,3 +30,4 @@ public class ResumeTestDate {
         return resume;
     }
 }
+

@@ -16,7 +16,7 @@ import java.util.Map;
 
 
 public abstract class AbstractStorageTest extends ResumeTestDate {
-    protected static final File STORAGE_DIR = new File("./src/ru/javawebinar");
+    protected static final File STORAGE_DIR = new File("C:\\Users\\Shiro\\basejava\\testResume");
     protected Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
