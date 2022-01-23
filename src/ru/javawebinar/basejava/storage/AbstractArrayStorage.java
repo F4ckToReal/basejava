@@ -37,12 +37,12 @@ public abstract class AbstractArrayStorage extends AbstractStorage <Integer> {
 
     @Override
     protected Resume doGet(Integer searchKey) {
-        return storage[(int) searchKey];
+        return storage [searchKey];
     }
 
     @Override
     protected boolean isExist(Integer searchKey) {
-        return (int) searchKey >= 0;
+        return  searchKey >= 0;
     }
 
     @Override
@@ -50,7 +50,7 @@ public abstract class AbstractArrayStorage extends AbstractStorage <Integer> {
         if (size >= STORAGE_LIMIT) {
             throw new StorageException("Storage overflow", r.getUuid());
         } else {
-            InsertResume(r, (int) searchKey);
+            InsertResume(r, searchKey);
             size++;
         }
     }

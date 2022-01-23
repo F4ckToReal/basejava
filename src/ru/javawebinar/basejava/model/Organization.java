@@ -1,6 +1,10 @@
 package ru.javawebinar.basejava.model;
 
-import java.io.Serial;
+import ru.javawebinar.basejava.util.LocalDateAdapter;
+
+import javax.xml.bind.annotation.XmlAccessType;
+import javax.xml.bind.annotation.XmlAccessorType;
+import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.time.Month;
@@ -9,12 +13,16 @@ import java.util.*;
 import static ru.javawebinar.basejava.util.DateUtil.NOW;
 import static ru.javawebinar.basejava.util.DateUtil.of;
 
+@XmlAccessorType(XmlAccessType.FIELD)
 public class Organization implements Serializable {
-    @Serial
+
     private static final long serialVersionUID = 1L;
 
-    private final Link homePage;
-    private final List<Position> timeWork;
+    public Link homePage;
+    public List<Position> timeWork;
+
+    public Organization(){
+    }
 
     public Organization(String name, String url, Position... timeWorks) {
         this(new Link(name, url), Arrays.asList(timeWorks));
@@ -44,11 +52,21 @@ public class Organization implements Serializable {
         return "Organization(" + homePage + ", " + timeWork + ')';
     }
 
-    public static class Position implements Serializable { ;
-        private final LocalDate startDate;
-        private final LocalDate endDate;
-        private final Set<String> title;
-        private final String description;
+    @XmlAccessorType(XmlAccessType.FIELD)
+    public static class Position implements Serializable {
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        public LocalDate startDate;
+        @XmlJavaTypeAdapter(LocalDateAdapter.class)
+        public LocalDate endDate;
+        public Set<String> title;
+        private String description;
+
+        public void setDescription(){
+            this.description = description;
+        }
+
+        public Position(){
+        }
 
         public Position(int startYear, Month startMonth, String title, String description) {
             this(of(startYear, startMonth), NOW, Collections.singleton(title), description);
