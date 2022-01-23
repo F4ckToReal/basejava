@@ -1,23 +1,28 @@
 package ru.javawebinar.basejava.model;
 
-import java.io.Serial;
 import java.io.Serializable;
-import java.util.*;
+import java.util.EnumMap;
+import java.util.Map;
+import java.util.Objects;
+import java.util.UUID;
 
 /**
  * Initial resume class
  */
 public class Resume implements Comparable<Resume>, Serializable {
-    @Serial
+
     private static final long serialVersionUID = 1L;
     // Unique identifier
-    private final String uuid;
+    private  String uuid;
 
-    private final String fullName;
+    private  String fullName;
 
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
     private final Map<SectionType, Section> section = new EnumMap<>(SectionType.class);
+
+    public Resume(){
+    }
 
 
     public Resume(String uuid, String fullName, Map<ContactType, String> contacts, Map<SectionType, Section> section) {
@@ -71,22 +76,6 @@ public class Resume implements Comparable<Resume>, Serializable {
         return uuid + "(" + fullName + ")";
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Resume resume = (Resume) o;
-
-        if (!uuid.equals(resume.uuid)) return false;
-        return fullName.equals(resume.fullName);
-    }
-
-    @Override
-    public int hashCode() {
-        int result = uuid.hashCode();
-        result = 31 * result + fullName.hashCode();
-        return result;
-    }
 
     @Override
     public int compareTo(Resume o) {
@@ -94,4 +83,16 @@ public class Resume implements Comparable<Resume>, Serializable {
         return comp != 0 ? comp : uuid.compareTo(o.uuid);
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Resume resume = (Resume) o;
+        return Objects.equals(uuid, resume.uuid) && fullName.equals(resume.fullName) && Objects.equals(contacts, resume.contacts) && Objects.equals(section, resume.section);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, fullName, contacts, section);
+    }
 }
