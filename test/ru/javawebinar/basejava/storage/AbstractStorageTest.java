@@ -23,7 +23,7 @@ public abstract class AbstractStorageTest extends ResumeTestDate {
     private static final Resume RESUME_1;
     private static final Resume RESUME_2;
     private static final Resume RESUME_3;
-   // private static final Resume RESUME_4;
+    // private static final Resume RESUME_4;
 
     private static final Map<ContactType, String> contacts = new EnumMap<ContactType, String>(ContactType.class);
     private static final Map<SectionType, Section> section = new EnumMap<>(SectionType.class);
