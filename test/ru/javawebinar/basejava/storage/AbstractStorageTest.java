@@ -23,18 +23,15 @@ public abstract class AbstractStorageTest extends ResumeTestDate {
     private static final Resume RESUME_1;
     private static final Resume RESUME_2;
     private static final Resume RESUME_3;
-    private static final Resume RESUME_4;
+   // private static final Resume RESUME_4;
 
     private static final Map<ContactType, String> contacts = new EnumMap<ContactType, String>(ContactType.class);
     private static final Map<SectionType, Section> section = new EnumMap<>(SectionType.class);
 
     static {
-        RESUME_1 = new Resume(UUID_1, "Ketti");
+        RESUME_1 = new Resume(UUID_1, "Ketti", contacts, section);
         RESUME_2 = new Resume(UUID_2, "Barri");
-        RESUME_3 = new Resume(UUID_3, "Genre");
-        RESUME_4 = new Resume(UUID_4, "Lora");
-
-
+        RESUME_3 = createResume(UUID_3, "Genre");
     }
 
 
@@ -46,11 +43,9 @@ public abstract class AbstractStorageTest extends ResumeTestDate {
     @Before
     public void setUp() throws Exception {
         storage.clear();
-        //storage.save(RESUME_1);
-        storage.save(createResume(UUID_1, "Ketti"));
+        storage.save(RESUME_1);
         storage.save(RESUME_2);
         storage.save(RESUME_3);
-
     }
 
     @Test
@@ -66,7 +61,7 @@ public abstract class AbstractStorageTest extends ResumeTestDate {
 
 
     @Test
-    public void get() {
+    public void get() throws Exception {
         assertGet(RESUME_1);
         assertGet(RESUME_2);
         assertGet(RESUME_3);
@@ -119,13 +114,18 @@ public abstract class AbstractStorageTest extends ResumeTestDate {
     @Test
     public void getAllSorted() throws IOException {
         List<Resume> list = storage.getAllSorted();
-
+        List<Resume> list2 = new ArrayList<>();
+        list2.add(0, RESUME_2);
+        list2.add(1, RESUME_3);
+        list2.add(2, RESUME_1);
         Assert.assertEquals(3, list.size());
-     //   Assert.assertEquals(list, list);
+        if (list == list2) {
+            Assert.assertTrue(true);
+        }
     }
 
 
-    private void assertGet(Resume r) {
+    private void assertGet(Resume r) throws Exception {
         Assert.assertEquals(r, storage.get(r.getUuid()));
     }
 

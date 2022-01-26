@@ -3,7 +3,7 @@ package ru.javawebinar.basejava.model;
 import java.time.Month;
 
 public class ResumeTestDate {
-    public Resume createResume(String uuid, String fullName) {
+    public static Resume createResume(String uuid, String fullName) {
         Resume resume = new Resume(uuid, fullName);
 
         resume.addContact(ContactType.MAIL, "mail1@ya.ru");

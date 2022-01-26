@@ -10,8 +10,8 @@ public class Link implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public String name;
-    public String url;
+    private String name;
+    private String url;
 
     public Link(){
     }

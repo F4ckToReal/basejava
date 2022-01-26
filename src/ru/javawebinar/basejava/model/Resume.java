@@ -17,10 +17,20 @@ import java.util.UUID;
 public class Resume implements Comparable<Resume>, Serializable {
 
     private static final long serialVersionUID = 1L;
+
+
     // Unique identifier
     private  String uuid;
-
     private  String fullName;
+
+    public void setFullName(String fullName) {
+        this.fullName = fullName;
+    }
+
+
+    public void setUuid(String uuid) {
+        this.uuid = uuid;
+    }
 
     private final Map<ContactType, String> contacts = new EnumMap<>(ContactType.class);
 
@@ -88,16 +98,18 @@ public class Resume implements Comparable<Resume>, Serializable {
         return comp != 0 ? comp : uuid.compareTo(o.uuid);
     }
 
+
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(uuid, fullName, contacts, section);
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return Objects.equals(uuid, resume.uuid) && fullName.equals(resume.fullName) && Objects.equals(contacts, resume.contacts) && Objects.equals(section, resume.section);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(uuid, fullName, contacts, section);
+        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName) && Objects.equals(contacts, resume.contacts) && Objects.equals(section, resume.section);
     }
 }

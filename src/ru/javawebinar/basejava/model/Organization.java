@@ -26,6 +26,7 @@ public class Organization implements Serializable {
 
     public Organization(String name, String url, Position... timeWorks) {
         this(new Link(name, url), Arrays.asList(timeWorks));
+        Objects.requireNonNull(name,"name must not be null");
     }
 
     public Organization(Link homePage, List<Position> timeWork) {
@@ -34,13 +35,6 @@ public class Organization implements Serializable {
     }
 
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Organization that = (Organization) o;
-        return Objects.equals(homePage, that.homePage) && timeWork.equals(that.timeWork);
-    }
 
     @Override
     public int hashCode() {
@@ -52,13 +46,21 @@ public class Organization implements Serializable {
         return "Organization(" + homePage + ", " + timeWork + ')';
     }
 
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Organization that = (Organization) o;
+        return Objects.equals(homePage, that.homePage) && Objects.equals(timeWork, that.timeWork);
+    }
+
     @XmlAccessorType(XmlAccessType.FIELD)
     public static class Position implements Serializable {
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
-        public LocalDate startDate;
+        private LocalDate startDate;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
-        public LocalDate endDate;
-        public Set<String> title;
+        private LocalDate endDate;
+        private Set<String> title;
         private String description;
 
         public void setDescription(){
