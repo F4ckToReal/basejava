@@ -1,8 +1,9 @@
-package ru.javawebinar.basejava.util;
+package ru.javawebinar.basejava.storage.serializer;
 
 import ru.javawebinar.basejava.model.ContactType;
 import ru.javawebinar.basejava.model.Resume;
-import ru.javawebinar.basejava.storage.serializer.StreamSerialize;
+import ru.javawebinar.basejava.model.Section;
+import ru.javawebinar.basejava.model.SectionType;
 
 import java.io.*;
 import java.util.Map;
@@ -10,7 +11,7 @@ import java.util.Map;
 public class DataStreamSerializer implements StreamSerialize {
     @Override
     public void doWrite(Resume r, OutputStream os) throws IOException {
-        try(DataOutputStream out = new DataOutputStream(os)){
+        try (DataOutputStream out = new DataOutputStream(os)) {
             out.writeUTF(r.getUuid());
             out.writeUTF(r.getFullName());
             Map<ContactType, String> contacts = r.getContacts();
@@ -18,6 +19,12 @@ public class DataStreamSerializer implements StreamSerialize {
             for (Map.Entry<ContactType, String> entry : contacts.entrySet()) {
                 out.writeUTF(entry.getKey().name());
                 out.writeUTF(entry.getValue());
+            }
+            Map<SectionType, Section> section = r.getSections();
+            out.writeInt(section.size());
+            for (Map.Entry<SectionType, Section> entry : section.entrySet()) {
+                out.writeUTF(entry.getKey().name());
+                out.writeUTF(entry.getValue().toString());
             }
         }
     }
@@ -31,8 +38,17 @@ public class DataStreamSerializer implements StreamSerialize {
             int size = dis.readInt();
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
+                resume.addSection(SectionType.OBJECTIVE, new Section() {
+                });
+                resume.addSection(SectionType.PERSONAL, new Section() {
+                });
+                resume.addSection(SectionType.ACHIEVEMENT, new Section() {
+                });
+                resume.addSection(SectionType.QUALIFICATIONS, new Section() {
+                });
+                resume.addSection(SectionType.EXPERIENCE, new Section() {
+                });
             }
-            // TODO implements sections
             return resume;
         }
     }
