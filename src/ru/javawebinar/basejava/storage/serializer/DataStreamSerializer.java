@@ -38,16 +38,6 @@ public class DataStreamSerializer implements StreamSerialize {
             int size = dis.readInt();
             for (int i = 0; i < size; i++) {
                 resume.addContact(ContactType.valueOf(dis.readUTF()), dis.readUTF());
-                resume.addSection(SectionType.OBJECTIVE, new Section() {
-                });
-                resume.addSection(SectionType.PERSONAL, new Section() {
-                });
-                resume.addSection(SectionType.ACHIEVEMENT, new Section() {
-                });
-                resume.addSection(SectionType.QUALIFICATIONS, new Section() {
-                });
-                resume.addSection(SectionType.EXPERIENCE, new Section() {
-                });
             }
             return resume;
         }
