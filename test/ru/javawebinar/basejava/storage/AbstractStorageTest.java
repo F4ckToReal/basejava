@@ -114,14 +114,8 @@ public abstract class AbstractStorageTest extends ResumeTestDate {
     @Test
     public void getAllSorted() throws IOException {
         List<Resume> list = storage.getAllSorted();
-        List<Resume> list2 = new ArrayList<>();
-        list2.add(0, RESUME_2);
-        list2.add(1, RESUME_3);
-        list2.add(2, RESUME_1);
         Assert.assertEquals(3, list.size());
-        if (list == list2) {
-            Assert.assertTrue(true);
-        }
+        Assert.assertEquals(list, Arrays.asList(RESUME_2, RESUME_3, RESUME_1));
     }
 
 

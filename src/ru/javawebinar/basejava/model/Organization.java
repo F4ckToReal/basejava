@@ -18,32 +18,31 @@ public class Organization implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    public Link homePage;
-    public List<Position> timeWork;
+   private Link homePage;
+   private List<Position> positions = new ArrayList<>();
 
     public Organization(){
     }
 
-    public Organization(String name, String url, Position... timeWorks) {
-        this(new Link(name, url), Arrays.asList(timeWorks));
-        Objects.requireNonNull(name,"name must not be null");
+    public Organization(String name, String url, Position... positions) {
+        this(new Link(name, url), Arrays.asList(positions));
     }
 
-    public Organization(Link homePage, List<Position> timeWork) {
+    public Organization(Link homePage, List<Position> positions) {
         this.homePage = homePage;
-        this.timeWork = timeWork;
+        this.positions = positions;
     }
 
 
 
     @Override
     public int hashCode() {
-        return Objects.hash(homePage, timeWork);
+        return Objects.hash(homePage, positions);
     }
 
     @Override
     public String toString() {
-        return "Organization(" + homePage + ", " + timeWork + ')';
+        return "Organization(" + homePage + ", " + positions + ')';
     }
 
     @Override
@@ -51,7 +50,15 @@ public class Organization implements Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Organization that = (Organization) o;
-        return Objects.equals(homePage, that.homePage) && Objects.equals(timeWork, that.timeWork);
+        return Objects.equals(homePage, that.homePage) && Objects.equals(positions, that.positions);
+    }
+
+    public Link getHomePage() {
+        return homePage;
+    }
+
+    public List<Position> getPositions() {
+        return positions;
     }
 
     @XmlAccessorType(XmlAccessType.FIELD)
@@ -60,7 +67,7 @@ public class Organization implements Serializable {
         private LocalDate startDate;
         @XmlJavaTypeAdapter(LocalDateAdapter.class)
         private LocalDate endDate;
-        private Set<String> title;
+        private String title;
         private String description;
 
         public void setDescription(){
@@ -71,21 +78,21 @@ public class Organization implements Serializable {
         }
 
         public Position(int startYear, Month startMonth, String title, String description) {
-            this(of(startYear, startMonth), NOW, Collections.singleton(title), description);
+            this(of(startYear, startMonth), NOW, title, description);
         }
 
         public Position(int startYear, Month startMonth, int endYear, Month endMonth, String title, String description) {
-            this(of(startYear, startMonth), of(endYear, endMonth), Collections.singleton(title), description);
+            this(of(startYear, startMonth), of(endYear, endMonth), title, description);
         }
 
-        public Position(LocalDate startDate, LocalDate endDate, Set<String> title, String description) {
+        public Position(LocalDate startDate, LocalDate endDate, String title, String description) {
             Objects.requireNonNull(startDate, "startDay must not be null");
             Objects.requireNonNull(endDate, " endDay must not be null");
             Objects.requireNonNull(title, " title must not be null");
             this.startDate = startDate;
             this.endDate = endDate;
             this.title = title;
-            this.description = description;
+            this.description = description == null ? "" : description;
         }
 
 
@@ -97,7 +104,7 @@ public class Organization implements Serializable {
                 return endDate;
             }
 
-            public Set<String> getTitle () {
+            public String getTitle () {
                 return title;
             }
 

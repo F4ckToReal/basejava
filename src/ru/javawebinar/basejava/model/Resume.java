@@ -20,8 +20,8 @@ public class Resume implements Comparable<Resume>, Serializable {
 
 
     // Unique identifier
-    private  String uuid;
-    private  String fullName;
+    private String uuid;
+    private String fullName;
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
@@ -36,7 +36,7 @@ public class Resume implements Comparable<Resume>, Serializable {
 
     private final Map<SectionType, Section> section = new EnumMap<>(SectionType.class);
 
-    public Resume(){
+    public Resume() {
     }
 
 
@@ -58,6 +58,7 @@ public class Resume implements Comparable<Resume>, Serializable {
         this.uuid = uuid;
         this.fullName = fullName;
     }
+
     public Map<ContactType, String> getContacts() {
         return contacts;
     }
@@ -106,7 +107,6 @@ public class Resume implements Comparable<Resume>, Serializable {
     }
 
 
-
     @Override
     public int hashCode() {
         return Objects.hash(uuid, fullName, contacts, section);
@@ -117,6 +117,9 @@ public class Resume implements Comparable<Resume>, Serializable {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Resume resume = (Resume) o;
-        return Objects.equals(uuid, resume.uuid) && Objects.equals(fullName, resume.fullName) && Objects.equals(contacts, resume.contacts) && Objects.equals(section, resume.section);
+        return Objects.equals(uuid, resume.uuid) &&
+                Objects.equals(fullName, resume.fullName) &&
+                Objects.equals(contacts, resume.contacts) &&
+                Objects.equals(section, resume.section);
     }
 }
