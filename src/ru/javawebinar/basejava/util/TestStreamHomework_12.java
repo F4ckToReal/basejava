@@ -27,8 +27,12 @@ public class TestStreamHomework_12 {
         System.out.println(minValue(array));
     }
     private static int minValue(int[] values) {
-        return Arrays.stream(values).distinct()
+        return Arrays.stream(values)
+                .distinct()
+                .sorted()
                 .reduce(0, (a,b) -> 10 * a + b);
+
+
     }
 
 }
