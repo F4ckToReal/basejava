@@ -3,6 +3,7 @@ package ru.javawebinar.basejava.storage;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import ru.javawebinar.basejava.Config;
 import ru.javawebinar.basejava.exception.ExistStorageException;
 import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.*;
@@ -13,7 +14,7 @@ import java.util.*;
 
 
 public abstract class AbstractStorageTest extends ResumeTestDate {
-    protected static final File STORAGE_DIR = new File("C:\\Users\\Shiro\\basejava\\testResume");
+    protected static final File STORAGE_DIR = Config.get().getTestResume();
     protected Storage storage;
     private static final String UUID_1 = "uuid1";
     private static final String UUID_2 = "uuid2";
