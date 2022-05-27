@@ -30,7 +30,7 @@ public abstract class AbstractStorageTest extends ResumeTestDate {
     private static final Map<SectionType, Section> section = new EnumMap<>(SectionType.class);
 
     static {
-        RESUME_1 = new Resume(UUID_1, "Ketti", contacts, section);
+        RESUME_1 = new Resume(UUID_1, "Ketti" );//, contacts, section);
         RESUME_2 = new Resume(UUID_2, "Barri");
         RESUME_3 = createResume(UUID_3, "Genre");
     }
@@ -116,7 +116,7 @@ public abstract class AbstractStorageTest extends ResumeTestDate {
     public void getAllSorted() throws IOException {
         List<Resume> list = storage.getAllSorted();
         Assert.assertEquals(3, list.size());
-        Assert.assertEquals(list, Arrays.asList(RESUME_2, RESUME_3, RESUME_1));
+        Assert.assertEquals(Arrays.asList(RESUME_2, RESUME_3, RESUME_1), list);
     }
 
 
