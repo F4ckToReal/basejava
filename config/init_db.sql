@@ -8,15 +8,12 @@ create table resume
 
 create table contact
 (
-    id          serial
-        constraint contact_pk
-            primary key,
-    type        text     not null,
-    "value "    text     not null,
-    resume_uuid char(36) not null
-        constraint contact_resume_uuid__fk
-            references resume (uuid)
-            on update restrict on delete cascade
+    id          serial,
+    resume_uuid char not null references resume (uuid)
+        on delete cascade,
+    type        text not null,
+    value       text not null
+
 );
 
 create unique index contact_uuid_type_index

@@ -9,7 +9,6 @@ import ru.javawebinar.basejava.exception.NotExistStorageException;
 import ru.javawebinar.basejava.model.*;
 
 import java.io.File;
-import java.io.IOException;
 import java.util.*;
 
 
@@ -30,9 +29,15 @@ public abstract class AbstractStorageTest extends ResumeTestDate {
     private static final Map<SectionType, Section> section = new EnumMap<>(SectionType.class);
 
     static {
-        RESUME_1 = new Resume(UUID_1, "Ketti" );//, contacts, section);
+        RESUME_1 = new Resume(UUID_1, "Ketti");
         RESUME_2 = new Resume(UUID_2, "Barri");
-        RESUME_3 = createResume(UUID_3, "Genre");
+        RESUME_3 = new Resume(UUID_3, "Genre");
+
+        RESUME_1.addContact(ContactType.MAIL, "Yn@com");
+        RESUME_1.addContact(ContactType.PHONE, "331276");
+
+        RESUME_3.addContact(ContactType.PHONE, "551521");
+        RESUME_3.addContact(ContactType.SKYPE, "Skype");
     }
 
 
@@ -77,6 +82,8 @@ public abstract class AbstractStorageTest extends ResumeTestDate {
     @Test
     public void update() throws Exception {
         Resume newResume = new Resume(UUID_1, "New Name");
+        newResume.addContact(ContactType.PHONE, "44-11-22");
+        newResume.addContact(ContactType.MAIL, "yandex_me@mail.ru");
         storage.update(newResume);
         Assert.assertEquals(newResume, storage.get(UUID_1));
     }
@@ -113,10 +120,12 @@ public abstract class AbstractStorageTest extends ResumeTestDate {
 
 
     @Test
-    public void getAllSorted() throws IOException {
+    public void getAllSorted() throws Exception {
         List<Resume> list = storage.getAllSorted();
         Assert.assertEquals(3, list.size());
-        Assert.assertEquals(Arrays.asList(RESUME_2, RESUME_3, RESUME_1), list);
+        List<Resume> sortedResumes = Arrays.asList(RESUME_2, RESUME_3, RESUME_1);
+        Collections.sort(sortedResumes);
+        Assert.assertEquals(sortedResumes, list);
     }
 
 
